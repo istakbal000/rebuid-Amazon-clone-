@@ -1,0 +1,11 @@
+{
+  "capture-log": {
+    "Stop": [
+      {
+        "type": "command",
+        "command": "python ./capture_log.py",
+        "timeout": 30
+      }
+    ]
+  }
+}

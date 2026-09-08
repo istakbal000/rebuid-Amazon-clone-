@@ -1,0 +1,22 @@
+@import "tailwindcss";
+
+@theme {
+  --color-amazon-dark: #131921;
+  --color-amazon-light: #232f3e;
+  --color-amazon-orange: #f90;
+  --color-amazon-yellow: #febd69;
+}
+
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: #eaeded;
+}
+
+* {
+  box-sizing: border-box;
+}
