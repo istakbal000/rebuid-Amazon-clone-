@@ -1,21 +1,15 @@
 import { createContext, useState, useEffect, useContext } from 'react';
 import axios from 'axios';
 import AuthContext from './AuthContext';
+import { ToastContext } from './ToastContext';
 
 const CartContext = createContext();
 
 export const CartProvider = ({ children }) => {
   const { token, user } = useContext(AuthContext);
+  const { toast } = useContext(ToastContext);
   const [cart, setCart] = useState({ items: [] });
   const [loading, setLoading] = useState(false);
-
-  useEffect(() => {
-    if (user && token) {
-      fetchCart();
-    } else {
-      setCart({ items: [] });
-    }
-  }, [user, token]);
 
   const fetchCart = async () => {
     setLoading(true);
@@ -29,16 +23,27 @@ export const CartProvider = ({ children }) => {
     }
   };
 
+  useEffect(() => {
+    if (user && token) {
+      fetchCart();
+    } else {
+      setCart({ items: [] });
+    }
+  }, [user, token]);
+
   const addToCart = async (productId, quantity = 1) => {
     if (!user) {
-      alert('Please login to add to cart');
-      return;
+      toast.warning('Please log in to add items to cart');
+      return false;
     }
     try {
       const res = await axios.post('/api/cart', { productId, quantity });
       setCart(res.data.cart);
+      toast.success('Added to cart!');
+      return true;
     } catch (error) {
-      alert(error.response?.data?.message || 'Error adding to cart');
+      toast.error(error.response?.data?.message || 'Error adding to cart');
+      return false;
     }
   };
 
@@ -47,7 +52,7 @@ export const CartProvider = ({ children }) => {
       const res = await axios.patch(`/api/cart/${itemId}`, { quantity });
       setCart(res.data.cart);
     } catch (error) {
-      alert(error.response?.data?.message || 'Error updating cart');
+      toast.error(error.response?.data?.message || 'Error updating cart');
     }
   };
 
@@ -55,7 +60,9 @@ export const CartProvider = ({ children }) => {
     try {
       const res = await axios.delete(`/api/cart/${itemId}`);
       setCart(res.data.cart);
+      toast.info('Item removed from cart');
     } catch (error) {
+      toast.error('Error removing item from cart');
       console.error('Error removing from cart', error);
     }
   };
@@ -69,10 +76,10 @@ export const CartProvider = ({ children }) => {
     }
   };
 
-  const cartItemCount = cart.items.reduce((acc, item) => acc + item.quantity, 0);
+  const cartItemCount = cart?.items?.reduce((acc, item) => acc + item.quantity, 0) || 0;
 
   return (
-    <CartContext.Provider value={{ cart, loading, addToCart, updateQuantity, removeFromCart, clearCart, cartItemCount }}>
+    <CartContext.Provider value={{ cart, loading, addToCart, updateQuantity, removeFromCart, clearCart, cartItemCount, fetchCart }}>
       {children}
     </CartContext.Provider>
   );

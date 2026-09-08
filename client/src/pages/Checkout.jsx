@@ -22,22 +22,10 @@ const Checkout = () => {
     fullName: '', street: '', city: '', state: '', zipCode: '', country: 'US'
   });
 
-  const subtotal = cart.items.reduce((acc, item) => acc + (item.price * item.quantity), 0);
+  const subtotal = cart?.items?.reduce((acc, item) => acc + (item.price * item.quantity), 0) || 0;
   const shipping = subtotal > 100 ? 0 : 10;
   const tax = subtotal * 0.08;
   const total = subtotal + shipping + tax;
-
-  useEffect(() => {
-    if (!user) {
-      navigate('/login');
-      return;
-    }
-    if (cart.items.length === 0) {
-      navigate('/cart');
-      return;
-    }
-    fetchAddresses();
-  }, [user, cart.items.length, navigate]);
 
   const fetchAddresses = async () => {
     try {
@@ -50,6 +38,18 @@ const Checkout = () => {
       console.error('Error fetching addresses', err);
     }
   };
+
+  useEffect(() => {
+    if (!user) {
+      navigate('/login');
+      return;
+    }
+    if (!cart?.items || cart?.items?.length === 0) {
+      navigate('/cart');
+      return;
+    }
+    fetchAddresses();
+  }, [user, cart?.items?.length, navigate]);
 
   const handleAddAddress = async (e) => {
     e.preventDefault();
@@ -80,7 +80,7 @@ const Checkout = () => {
         paymentMethod
       };
       
-      const res = await axios.post('/api/orders', orderData);
+      await axios.post('/api/orders', orderData);
       clearCart();
       navigate('/orders', { state: { orderPlaced: true } });
     } catch (err) {
@@ -221,7 +221,7 @@ const Checkout = () => {
                 <div className="border border-gray-300 rounded-lg p-4">
                   <h3 className="font-bold mb-4 text-green-700 text-lg">Delivery: Tomorrow</h3>
                   <div className="flex flex-col gap-4">
-                    {cart.items.map(item => (
+                    {cart?.items?.map(item => (
                       <div key={item._id} className="flex gap-4">
                         <img src={item.product?.images?.[0]} alt="" className="w-16 h-16 object-contain" />
                         <div>

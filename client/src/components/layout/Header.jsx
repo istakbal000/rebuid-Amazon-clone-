@@ -1,5 +1,5 @@
 import { Link, useNavigate } from 'react-router-dom';
-import { Search, ShoppingCart, MapPin, Menu, User as UserIcon } from 'lucide-react';
+import { Search, ShoppingCart, MapPin, Menu } from 'lucide-react';
 import { useContext, useState } from 'react';
 import AuthContext from '../../context/AuthContext';
 import CartContext from '../../context/CartContext';

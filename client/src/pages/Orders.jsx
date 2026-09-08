@@ -88,7 +88,7 @@ const Orders = () => {
                 <div className="flex flex-col text-right">
                   <span className="uppercase font-medium">Order # {order._id.substring(0, 10).toUpperCase()}-{order._id.substring(10, 17).toUpperCase()}</span>
                   <div className="flex gap-2 justify-end">
-                    <span className="text-blue-600 hover:underline cursor-pointer">View order details</span>
+                    <Link to={`/orders/${order._id}`} className="text-blue-600 hover:underline cursor-pointer">View order details</Link>
                     <span className="text-gray-300">|</span>
                     <span className="text-blue-600 hover:underline cursor-pointer">Invoice</span>
                   </div>

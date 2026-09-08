@@ -1,6 +1,7 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Header from './components/layout/Header';
 import Footer from './components/layout/Footer';
+import ProtectedRoute from './components/ProtectedRoute';
 import Home from './pages/Home';
 import ProductDetails from './pages/ProductDetails';
 import ProductList from './pages/ProductList';
@@ -9,6 +10,7 @@ import Register from './pages/Register';
 import Cart from './pages/Cart';
 import Checkout from './pages/Checkout';
 import Orders from './pages/Orders';
+import OrderDetail from './pages/OrderDetail';
 
 function App() {
   return (
@@ -24,8 +26,15 @@ function App() {
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
             <Route path="/cart" element={<Cart />} />
-            <Route path="/checkout" element={<Checkout />} />
-            <Route path="/orders" element={<Orders />} />
+            <Route path="/checkout" element={
+              <ProtectedRoute><Checkout /></ProtectedRoute>
+            } />
+            <Route path="/orders" element={
+              <ProtectedRoute><Orders /></ProtectedRoute>
+            } />
+            <Route path="/orders/:id" element={
+              <ProtectedRoute><OrderDetail /></ProtectedRoute>
+            } />
           </Routes>
         </main>
         <Footer />

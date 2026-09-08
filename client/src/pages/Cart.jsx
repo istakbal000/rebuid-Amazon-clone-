@@ -19,7 +19,9 @@ const Cart = () => {
           {cart.items.length === 0 ? (
             <div className="py-8">
               <h2 className="text-xl font-medium mb-4">Your Amazon Cart is empty.</h2>
-              <Link to="/" className="text-blue-600 hover:text-amazon-orange hover:underline">Continue shopping</Link>
+              <Link to="/" className="inline-block bg-[#f0c14b] hover:bg-[#f4d078] border border-[#a88734] px-6 py-2 rounded-md shadow-sm text-sm font-medium text-black">
+                Continue shopping
+              </Link>
             </div>
           ) : (
             <div className="flex flex-col gap-4">
@@ -28,9 +30,10 @@ const Cart = () => {
                   {/* Image */}
                   <div className="w-full sm:w-1/4 md:w-1/5 flex justify-center">
                     <img 
-                      src={item.product?.images?.[0] || 'https://via.placeholder.com/150'} 
+                      src={item.product?.images?.[0]} 
                       alt={item.product?.title || 'Product'} 
                       className="max-h-32 object-contain"
+                      onError={e => { e.target.src = 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=400&h=300&fit=crop'; }}
                     />
                   </div>
                   
@@ -94,10 +97,17 @@ const Cart = () => {
             
             <button 
               onClick={() => navigate('/checkout')}
-              className="w-full bg-[#f0c14b] hover:bg-[#f4d078] border border-[#a88734] py-2 rounded-md shadow-sm text-sm"
+              className="w-full bg-[#f0c14b] hover:bg-[#f4d078] border border-[#a88734] py-2 rounded-md shadow-sm text-sm mb-3"
             >
               Proceed to checkout
             </button>
+
+            <Link 
+              to="/"
+              className="block w-full text-center bg-gray-100 hover:bg-gray-200 border border-gray-300 py-2 rounded-md shadow-sm text-sm text-black"
+            >
+              Continue shopping
+            </Link>
           </div>
         )}
       </div>

@@ -4,7 +4,12 @@ import Category from '../models/Category.js';
 import Product from '../models/Product.js';
 import connectDB from '../config/db.js';
 
-dotenv.config({ path: '../../.env' }); // Adjust if run from root vs src
+import { fileURLToPath } from 'url';
+import { dirname, join } from 'path';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+dotenv.config({ path: join(__dirname, '../../.env') });
 
 const categories = [
   { name: 'Electronics', slug: 'electronics' },
@@ -20,13 +25,69 @@ const generateProducts = (categoryDocs) => {
   
   const getCatId = (slug) => categoryDocs.find(c => c.slug === slug)._id;
 
+  const getImg = (text) => {
+    const map = {
+      'Wireless Headphones': 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=600&h=400&fit=crop',
+      '55-inch Smart TV': 'https://images.unsplash.com/photo-1593359677879-a4bb92f829d1?w=600&h=400&fit=crop',
+      'Smartphone Pro Max': 'https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=600&h=400&fit=crop',
+      'Mechanical Keyboard': 'https://images.unsplash.com/photo-1595225476474-87563907a212?w=600&h=400&fit=crop',
+      'Wireless Mouse': 'https://images.unsplash.com/photo-1527864550417-7fd91fc51a46?w=600&h=400&fit=crop',
+      'Portable Speaker': 'https://images.unsplash.com/photo-1608043152269-423dbba4e7e1?w=600&h=400&fit=crop',
+      'Mirrorless Camera': 'https://images.unsplash.com/photo-1516035069371-29a1b244cc32?w=600&h=400&fit=crop',
+      'Fitness Smartwatch': 'https://images.unsplash.com/photo-1575311373937-040b8e1fd5b6?w=600&h=400&fit=crop',
+      'Wireless Earbuds': 'https://images.unsplash.com/photo-1590658268037-6bf12165a8df?w=600&h=400&fit=crop',
+      'Gaming Console': 'https://images.unsplash.com/photo-1486401899868-0e435ed85128?w=600&h=400&fit=crop',
+      'The Clean Coder Book': 'https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?w=600&h=400&fit=crop',
+      'Atomic Habits Book': 'https://images.unsplash.com/photo-1589829085413-56de8ae18c73?w=600&h=400&fit=crop',
+      'Dune Book': 'https://images.unsplash.com/photo-1481627834876-b7833e8f5570?w=600&h=400&fit=crop',
+      'Psychology of Money': 'https://images.unsplash.com/photo-1554224155-6726b3ff858f?w=600&h=400&fit=crop',
+      'Sapiens Book': 'https://images.unsplash.com/photo-1532012197267-da84d127e765?w=600&h=400&fit=crop',
+      'Professional Blender': 'https://images.unsplash.com/photo-1585515320310-259814833e62?w=600&h=400&fit=crop',
+      'Cookware Set': 'https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=600&h=400&fit=crop',
+      'Robot Vacuum': 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=600&h=400&fit=crop',
+      'Coffee Maker': 'https://images.unsplash.com/photo-1517668808822-9ebb02f2a0e6?w=600&h=400&fit=crop',
+      'Air Purifier': 'https://images.unsplash.com/photo-1626082927389-6cd097cdc6ec?w=600&h=400&fit=crop',
+      'White T-Shirt': 'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=600&h=400&fit=crop',
+      'Mens Jeans': 'https://images.unsplash.com/photo-1542272604-787c3835535d?w=600&h=400&fit=crop',
+      'Running Shoes': 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=600&h=400&fit=crop',
+      'Puffer Jacket': 'https://images.unsplash.com/photo-1551028719-00167b16eac5?w=600&h=400&fit=crop',
+      'LEGO Set': 'https://images.unsplash.com/photo-1587654780291-39c9404d746b?w=600&h=400&fit=crop',
+      'RC Car': 'https://images.unsplash.com/photo-1594787318286-3d835c1d207f?w=600&h=400&fit=crop',
+      'Board Game': 'https://images.unsplash.com/photo-1611996575749-79a3a250f948?w=600&h=400&fit=crop',
+      'Yoga Mat': 'https://images.unsplash.com/photo-1601925260368-ae2f83cf8b7f?w=600&h=400&fit=crop',
+      'Dumbbell Set': 'https://images.unsplash.com/photo-1583454110551-21f2fa2afe61?w=600&h=400&fit=crop',
+      'Camping Tent': 'https://images.unsplash.com/photo-1504280390367-361c6d9f38f4?w=600&h=400&fit=crop',
+      // NEW
+      'Laptop': 'https://images.unsplash.com/photo-1496181133206-80ce9b88a853?w=600&h=400&fit=crop',
+      'Tablet': 'https://images.unsplash.com/photo-1544244015-0df4b3ffc6b0?w=600&h=400&fit=crop',
+      'Smart Speaker': 'https://images.unsplash.com/photo-1543512214-318c7553f230?w=600&h=400&fit=crop',
+      '4K Monitor': 'https://images.unsplash.com/photo-1527443224154-c4a573d5f5a7?w=600&h=400&fit=crop',
+      'Drone': 'https://images.unsplash.com/photo-1473968512647-3e447244af8f?w=600&h=400&fit=crop',
+      'Rich Dad Poor Dad': 'https://images.unsplash.com/photo-1554244933-d876deb6b2ff?w=600&h=400&fit=crop',
+      'Harry Potter Book': 'https://images.unsplash.com/photo-1606787366850-de6330128bfc?w=600&h=400&fit=crop',
+      'The Alchemist': 'https://images.unsplash.com/photo-1512820790803-83ca734da794?w=600&h=400&fit=crop',
+      'Stand Mixer': 'https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=600&h=400&fit=crop',
+      'Electric Kettle': 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=600&h=400&fit=crop',
+      'Toaster Oven': 'https://images.unsplash.com/photo-1585515320310-259814833e62?w=600&h=400&fit=crop',
+      'Hoodie': 'https://images.unsplash.com/photo-1556821840-3a63f15732ce?w=600&h=400&fit=crop',
+      'Oxford Shirt': 'https://images.unsplash.com/photo-1602810316498-ab67cf68c8e1?w=600&h=400&fit=crop',
+      'Sunglasses': 'https://images.unsplash.com/photo-1511499767150-a48a237f0083?w=600&h=400&fit=crop',
+      'Puzzle': 'https://images.unsplash.com/photo-1606503153255-59d8b8b82176?w=600&h=400&fit=crop',
+      'Stuffed Animal': 'https://images.unsplash.com/photo-1558679908-541bcf1249ff?w=600&h=400&fit=crop',
+      'Resistance Bands': 'https://images.unsplash.com/photo-1598289431512-b97b0917afed?w=600&h=400&fit=crop',
+      'Water Bottle': 'https://images.unsplash.com/photo-1602143407151-7111542de6e8?w=600&h=400&fit=crop',
+      'Bicycle Helmet': 'https://images.unsplash.com/photo-1557803175-b8f1db7ef1e6?w=600&h=400&fit=crop',
+    };
+    return map[text];
+  };
+
   // Electronics (10 products)
   products.push({
     title: 'Wireless Noise Cancelling Headphones',
     description: 'Industry leading noise cancellation with dual noise sensor technology. Next-level music with Edge-AI, co-developed with Sony Music Studios Tokyo. Up to 30-hour battery life with quick charging.',
     price: 298.00,
     originalPrice: 349.99,
-    images: ['https://images.unsplash.com/photo-1618366712010-f4ae9c647dcb?auto=format&fit=crop&q=80&w=800'],
+    images: [getImg('Wireless Headphones')],
     category: getCatId('electronics'),
     brand: 'AudioTech',
     rating: 4.8,
@@ -38,7 +99,7 @@ const generateProducts = (categoryDocs) => {
     description: 'Experience stunning 4K Ultra HD picture quality with over 8 million pixels. Smart TV capabilities with built-in streaming apps.',
     price: 499.99,
     originalPrice: 599.99,
-    images: ['https://images.unsplash.com/photo-1593359677879-a4bb92f829d1?auto=format&fit=crop&q=80&w=800'],
+    images: [getImg('55-inch Smart TV')],
     category: getCatId('electronics'),
     brand: 'VisionPlus',
     rating: 4.5,
@@ -49,7 +110,7 @@ const generateProducts = (categoryDocs) => {
     title: 'Smartphone Pro Max 256GB',
     description: 'A dramatically more powerful camera system. A display so responsive, every interaction feels new. The world’s fastest smartphone chip. Exceptional durability.',
     price: 1099.00,
-    images: ['https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?auto=format&fit=crop&q=80&w=800'],
+    images: [getImg('Smartphone Pro Max')],
     category: getCatId('electronics'),
     brand: 'Pear',
     rating: 4.9,
@@ -61,7 +122,7 @@ const generateProducts = (categoryDocs) => {
     description: 'Wireless mechanical keyboard with tactile switches. Connects up to 3 devices. Long battery life and customizable RGB backlighting.',
     price: 129.50,
     originalPrice: 149.00,
-    images: ['https://images.unsplash.com/photo-1595225476474-87563907a212?auto=format&fit=crop&q=80&w=800'],
+    images: [getImg('Mechanical Keyboard')],
     category: getCatId('electronics'),
     brand: 'TypeMaster',
     rating: 4.6,
@@ -72,7 +133,7 @@ const generateProducts = (categoryDocs) => {
     title: 'Ergonomic Wireless Mouse',
     description: 'Advanced ergonomic design promotes natural hand positioning. Hyper-fast scrolling and customizable buttons for ultimate productivity.',
     price: 79.99,
-    images: ['https://images.unsplash.com/photo-1527864550417-7fd91fc51a46?auto=format&fit=crop&q=80&w=800'],
+    images: [getImg('Wireless Mouse')],
     category: getCatId('electronics'),
     brand: 'ClickPro',
     rating: 4.7,
@@ -84,7 +145,7 @@ const generateProducts = (categoryDocs) => {
     description: 'Waterproof portable Bluetooth speaker with deep bass. Up to 12 hours of playtime. Wirelessly connect up to 2 smartphones or tablets.',
     price: 89.95,
     originalPrice: 119.95,
-    images: ['https://images.unsplash.com/photo-1608043152269-423dbba4e7e1?auto=format&fit=crop&q=80&w=800'],
+    images: [getImg('Portable Speaker')],
     category: getCatId('electronics'),
     brand: 'SoundWave',
     rating: 4.8,
@@ -96,7 +157,7 @@ const generateProducts = (categoryDocs) => {
     description: '24.2MP mirrorless camera with 4K video capabilities. Includes standard zoom lens. Eye detection AF and high-speed continuous shooting.',
     price: 898.00,
     originalPrice: 998.00,
-    images: ['https://images.unsplash.com/photo-1516035069371-29a1b244cc32?auto=format&fit=crop&q=80&w=800'],
+    images: [getImg('Mirrorless Camera')],
     category: getCatId('electronics'),
     brand: 'PhotoGen',
     rating: 4.5,
@@ -107,7 +168,7 @@ const generateProducts = (categoryDocs) => {
     title: 'Smartwatch Fitness Tracker',
     description: 'Advanced health and fitness tracking. Built-in GPS, heart rate monitor, and sleep tracking. Water-resistant up to 50 meters.',
     price: 199.99,
-    images: ['https://images.unsplash.com/photo-1508685096489-7aacd43bd3b1?auto=format&fit=crop&q=80&w=800'],
+    images: [getImg('Fitness Smartwatch')],
     category: getCatId('electronics'),
     brand: 'FitLife',
     rating: 4.4,
@@ -118,7 +179,7 @@ const generateProducts = (categoryDocs) => {
     title: 'Noise Cancelling Earbuds',
     description: 'True wireless earbuds with active noise cancellation. Transparency mode for hearing your surroundings. Sweat and water-resistant.',
     price: 149.00,
-    images: ['https://images.unsplash.com/photo-1590658268037-6bf12165a8df?auto=format&fit=crop&q=80&w=800'],
+    images: [getImg('Wireless Earbuds')],
     category: getCatId('electronics'),
     brand: 'AudioTech',
     rating: 4.6,
@@ -129,7 +190,7 @@ const generateProducts = (categoryDocs) => {
     title: 'Gaming Console NextGen',
     description: 'Experience lightning-fast loading with an ultra-high-speed SSD, deeper immersion with support for haptic feedback, adaptive triggers and 3D Audio.',
     price: 499.00,
-    images: ['https://images.unsplash.com/photo-1606144042614-b2417e99c4e3?auto=format&fit=crop&q=80&w=800'],
+    images: [getImg('Gaming Console')],
     category: getCatId('electronics'),
     brand: 'PlayTech',
     rating: 4.9,
@@ -142,7 +203,7 @@ const generateProducts = (categoryDocs) => {
     title: 'The Clean Coder: A Code of Conduct',
     description: 'Practical advice for professional programmers. Covers estimation, coding, testing, and more.',
     price: 34.99,
-    images: ['https://images.unsplash.com/photo-1544947950-fa07a98d237f?auto=format&fit=crop&q=80&w=800'],
+    images: [getImg('The Clean Coder Book')],
     category: getCatId('books'),
     brand: 'Pearson',
     rating: 4.7,
@@ -154,7 +215,7 @@ const generateProducts = (categoryDocs) => {
     description: 'An Easy & Proven Way to Build Good Habits & Break Bad Ones. A comprehensive, practical guide on how to change your habits and get 1% better every day.',
     price: 16.99,
     originalPrice: 27.00,
-    images: ['https://images.unsplash.com/photo-1589829085413-56de8ae18c73?auto=format&fit=crop&q=80&w=800'],
+    images: [getImg('Atomic Habits Book')],
     category: getCatId('books'),
     brand: 'Penguin',
     rating: 4.8,
@@ -165,7 +226,7 @@ const generateProducts = (categoryDocs) => {
     title: 'Dune (Penguin Galaxy)',
     description: 'Frank Herbert’s classic masterpiece—a triumph of the imagination and one of the bestselling science fiction novels of all time.',
     price: 18.00,
-    images: ['https://images.unsplash.com/photo-1614113489855-66422ad300a4?auto=format&fit=crop&q=80&w=800'],
+    images: [getImg('Dune Book')],
     category: getCatId('books'),
     brand: 'Ace Books',
     rating: 4.7,
@@ -177,7 +238,7 @@ const generateProducts = (categoryDocs) => {
     description: 'Timeless lessons on wealth, greed, and happiness. Doing well with money isn’t necessarily about what you know. It’s about how you behave.',
     price: 14.50,
     originalPrice: 19.99,
-    images: ['https://images.unsplash.com/photo-1554774853-719586f82d77?auto=format&fit=crop&q=80&w=800'],
+    images: [getImg('Psychology of Money')],
     category: getCatId('books'),
     brand: 'Harriman House',
     rating: 4.6,
@@ -189,7 +250,7 @@ const generateProducts = (categoryDocs) => {
     description: 'From a renowned historian comes a groundbreaking narrative of humanity’s creation and evolution.',
     price: 22.00,
     originalPrice: 25.00,
-    images: ['https://images.unsplash.com/photo-1588666309990-d68f08e3d4a6?auto=format&fit=crop&q=80&w=800'],
+    images: [getImg('Sapiens Book')],
     category: getCatId('books'),
     brand: 'Harper',
     rating: 4.6,
@@ -203,7 +264,7 @@ const generateProducts = (categoryDocs) => {
     description: 'Professional blender with 1000 watts of professional performance power. Features 64 oz maximum liquid capacity.',
     price: 89.99,
     originalPrice: 119.99,
-    images: ['https://images.unsplash.com/photo-1585237405603-75210134bdbe?auto=format&fit=crop&q=80&w=800'],
+    images: [getImg('Professional Blender')],
     category: getCatId('home-kitchen'),
     brand: 'KitchenPro',
     rating: 4.7,
@@ -214,7 +275,7 @@ const generateProducts = (categoryDocs) => {
     title: 'Non-Stick Cookware Set 10-Piece',
     description: '10-piece non-stick cookware set includes fry pans, saucepans, and dutch oven. Aluminum body with non-stick coating for easy cooking and cleaning.',
     price: 149.50,
-    images: ['https://images.unsplash.com/photo-1584990347449-a6e492215c0e?auto=format&fit=crop&q=80&w=800'],
+    images: [getImg('Cookware Set')],
     category: getCatId('home-kitchen'),
     brand: 'ChefChoice',
     rating: 4.5,
@@ -226,7 +287,7 @@ const generateProducts = (categoryDocs) => {
     description: 'Wi-Fi connected robot vacuum cleaner. Works with voice assistants. Self-charging, good for pet hair, carpets, and hard floors.',
     price: 249.99,
     originalPrice: 299.99,
-    images: ['https://images.unsplash.com/photo-1518640467707-6811f4a6ab73?auto=format&fit=crop&q=80&w=800'],
+    images: [getImg('Robot Vacuum')],
     category: getCatId('home-kitchen'),
     brand: 'CleanBot',
     rating: 4.4,
@@ -237,7 +298,7 @@ const generateProducts = (categoryDocs) => {
     title: 'Stainless Steel Coffee Maker',
     description: '12-cup programmable coffee maker with thermal carafe. Keep warm setting and brew strength control.',
     price: 79.00,
-    images: ['https://images.unsplash.com/photo-1520970014086-2208d157c9e2?auto=format&fit=crop&q=80&w=800'],
+    images: [getImg('Coffee Maker')],
     category: getCatId('home-kitchen'),
     brand: 'BrewMaster',
     rating: 4.6,
@@ -249,7 +310,7 @@ const generateProducts = (categoryDocs) => {
     description: 'True HEPA air purifier for large rooms. Filters allergies, pets, smoke, dust. Ultra-quiet operation.',
     price: 129.99,
     originalPrice: 159.99,
-    images: ['https://images.unsplash.com/photo-1527661591475-527312dd65f5?auto=format&fit=crop&q=80&w=800'],
+    images: [getImg('Air Purifier')],
     category: getCatId('home-kitchen'),
     brand: 'PureAir',
     rating: 4.8,
@@ -262,7 +323,7 @@ const generateProducts = (categoryDocs) => {
     title: 'Classic White T-Shirt',
     description: '100% cotton classic fit crewneck t-shirt. Soft, breathable, and durable for everyday wear.',
     price: 15.00,
-    images: ['https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?auto=format&fit=crop&q=80&w=800'],
+    images: [getImg('White T-Shirt')],
     category: getCatId('clothing'),
     brand: 'Basics',
     rating: 4.5,
@@ -274,7 +335,7 @@ const generateProducts = (categoryDocs) => {
     description: 'Classic five-pocket styling. Sits below the waist with a slim fit from hip to ankle.',
     price: 49.99,
     originalPrice: 59.99,
-    images: ['https://images.unsplash.com/photo-1542272604-787c3835535d?auto=format&fit=crop&q=80&w=800'],
+    images: [getImg('Mens Jeans')],
     category: getCatId('clothing'),
     brand: 'DenimCo',
     rating: 4.4,
@@ -286,7 +347,7 @@ const generateProducts = (categoryDocs) => {
     description: 'Lightweight and breathable mesh upper. Cushioned midsole for comfort and support during runs.',
     price: 85.00,
     originalPrice: 100.00,
-    images: ['https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&q=80&w=800'],
+    images: [getImg('Running Shoes')],
     category: getCatId('clothing'),
     brand: 'RunFast',
     rating: 4.7,
@@ -297,7 +358,7 @@ const generateProducts = (categoryDocs) => {
     title: 'Winter Puffer Jacket',
     description: 'Water-resistant and windproof puffer jacket. Insulated for extra warmth in cold weather conditions.',
     price: 110.00,
-    images: ['https://images.unsplash.com/photo-1551028719-00167b16eac5?auto=format&fit=crop&q=80&w=800'],
+    images: [getImg('Puffer Jacket')],
     category: getCatId('clothing'),
     brand: 'ArcticWear',
     rating: 4.8,
@@ -310,7 +371,7 @@ const generateProducts = (categoryDocs) => {
     title: 'Classic LEGO Bricks Set',
     description: 'Unleash creativity with this classic building blocks set. Includes 790 pieces in 33 different colors.',
     price: 45.99,
-    images: ['https://images.unsplash.com/photo-1587654780291-39c9404d746b?auto=format&fit=crop&q=80&w=800'],
+    images: [getImg('LEGO Set')],
     category: getCatId('toys'),
     brand: 'LEGO',
     rating: 4.9,
@@ -322,7 +383,7 @@ const generateProducts = (categoryDocs) => {
     description: 'High-speed off-road remote control car. 4-wheel drive, durable design, and long battery life.',
     price: 39.99,
     originalPrice: 49.99,
-    images: ['https://images.unsplash.com/photo-1594787318286-3d835c1d207f?auto=format&fit=crop&q=80&w=800'],
+    images: [getImg('RC Car')],
     category: getCatId('toys'),
     brand: 'SpeedTech',
     rating: 4.3,
@@ -333,7 +394,7 @@ const generateProducts = (categoryDocs) => {
     title: 'Educational Board Game',
     description: 'Fun and educational board game for the whole family. Teaches strategy and resource management.',
     price: 29.50,
-    images: ['https://images.unsplash.com/photo-1610890716171-6b1bb98ffaed?auto=format&fit=crop&q=80&w=800'],
+    images: [getImg('Board Game')],
     category: getCatId('toys'),
     brand: 'GameNight',
     rating: 4.7,
@@ -346,7 +407,7 @@ const generateProducts = (categoryDocs) => {
     title: 'Yoga Mat with Alignment Lines',
     description: 'Eco-friendly TPE yoga mat with alignment markers. Non-slip, thick, and durable for all types of yoga.',
     price: 35.00,
-    images: ['https://images.unsplash.com/photo-1601925260368-ae2f83cf8b7f?auto=format&fit=crop&q=80&w=800'],
+    images: [getImg('Yoga Mat')],
     category: getCatId('sports'),
     brand: 'ZenFit',
     rating: 4.6,
@@ -358,7 +419,7 @@ const generateProducts = (categoryDocs) => {
     description: 'Space-saving adjustable dumbbells. Change weights from 5 to 52.5 lbs with a simple dial mechanism.',
     price: 199.00,
     originalPrice: 249.00,
-    images: ['https://images.unsplash.com/photo-1638202993928-7267aad84c31?auto=format&fit=crop&q=80&w=800'],
+    images: [getImg('Dumbbell Set')],
     category: getCatId('sports'),
     brand: 'IronStrength',
     rating: 4.8,
@@ -369,12 +430,248 @@ const generateProducts = (categoryDocs) => {
     title: 'Camping Tent 4-Person',
     description: 'Spacious 4-person dome tent. Weather-resistant with easy 10-minute setup. Includes rainfly and carrying bag.',
     price: 125.00,
-    images: ['https://images.unsplash.com/photo-1504280390226-e172a392b4fa?auto=format&fit=crop&q=80&w=800'],
+    images: [getImg('Camping Tent')],
     category: getCatId('sports'),
     brand: 'Outdoorsy',
     rating: 4.5,
     reviewCount: 1400,
     stock: 40
+  });
+
+  // --- NEW: Electronics ---
+  products.push({
+    title: 'Pro Laptop 15-inch',
+    description: 'Thin and light laptop with 15-inch Retina display, 16GB RAM, 512GB SSD, and all-day battery life. Perfect for work and creativity.',
+    price: 1299.00,
+    originalPrice: 1499.00,
+    images: [getImg('Laptop')],
+    category: getCatId('electronics'),
+    brand: 'TechBook',
+    rating: 4.8,
+    reviewCount: 6800,
+    stock: 30
+  });
+  products.push({
+    title: 'Smart Tablet 10-inch',
+    description: '10-inch tablet with stunning display, powerful processor, and all-day battery. Great for streaming, browsing, and light productivity.',
+    price: 449.00,
+    originalPrice: 499.00,
+    images: [getImg('Tablet')],
+    category: getCatId('electronics'),
+    brand: 'TabPro',
+    rating: 4.6,
+    reviewCount: 3400,
+    stock: 60
+  });
+  products.push({
+    title: 'Smart Home Speaker',
+    description: 'Voice-controlled smart speaker with rich sound. Control your smart home, play music, set timers, and more with just your voice.',
+    price: 99.99,
+    originalPrice: 129.99,
+    images: [getImg('Smart Speaker')],
+    category: getCatId('electronics'),
+    brand: 'EchoHome',
+    rating: 4.5,
+    reviewCount: 18900,
+    stock: 200
+  });
+  products.push({
+    title: '4K Ultra HD Monitor 27-inch',
+    description: '27-inch 4K IPS monitor with HDR support, 99% sRGB color accuracy, and ergonomic stand. Ideal for creative professionals.',
+    price: 349.99,
+    originalPrice: 429.99,
+    images: [getImg('4K Monitor')],
+    category: getCatId('electronics'),
+    brand: 'ViewClear',
+    rating: 4.7,
+    reviewCount: 2100,
+    stock: 40
+  });
+  products.push({
+    title: 'Mini Drone with Camera',
+    description: 'Compact foldable drone with 4K camera, 3-axis gimbal stabilization, and 30-minute flight time. GPS auto-return and obstacle avoidance.',
+    price: 299.00,
+    originalPrice: 399.00,
+    images: [getImg('Drone')],
+    category: getCatId('electronics'),
+    brand: 'SkyFly',
+    rating: 4.4,
+    reviewCount: 1500,
+    stock: 25
+  });
+
+  // --- NEW: Books ---
+  products.push({
+    title: 'Rich Dad Poor Dad',
+    description: 'What the rich teach their kids about money that the poor and middle class do not. The #1 Personal Finance book of all time.',
+    price: 12.99,
+    originalPrice: 17.99,
+    images: [getImg('Rich Dad Poor Dad')],
+    category: getCatId('books'),
+    brand: 'Plata Publishing',
+    rating: 4.7,
+    reviewCount: 112000,
+    stock: 300
+  });
+  products.push({
+    title: 'Harry Potter and the Sorcerer\'s Stone',
+    description: 'The magical first book in J.K. Rowling\'s beloved series. Follow Harry Potter as he discovers he\'s a wizard and enters Hogwarts School of Witchcraft and Wizardry.',
+    price: 14.99,
+    images: [getImg('Harry Potter Book')],
+    category: getCatId('books'),
+    brand: 'Scholastic',
+    rating: 4.9,
+    reviewCount: 250000,
+    stock: 500
+  });
+  products.push({
+    title: 'The Alchemist',
+    description: 'Paulo Coelho\'s enchanting novel, a worldwide phenomenon and a story that speaks to the heart about following your dreams.',
+    price: 13.50,
+    originalPrice: 16.99,
+    images: [getImg('The Alchemist')],
+    category: getCatId('books'),
+    brand: 'HarperOne',
+    rating: 4.8,
+    reviewCount: 95000,
+    stock: 200
+  });
+
+  // --- NEW: Home & Kitchen ---
+  products.push({
+    title: 'Electric Stand Mixer 5.5-Qt',
+    description: '5.5-quart tilt-head stand mixer with 10 speeds and multiple attachments. Perfect for baking cakes, bread, and more.',
+    price: 379.99,
+    originalPrice: 449.99,
+    images: [getImg('Stand Mixer')],
+    category: getCatId('home-kitchen'),
+    brand: 'BakePro',
+    rating: 4.8,
+    reviewCount: 7200,
+    stock: 35
+  });
+  products.push({
+    title: 'Stainless Steel Electric Kettle',
+    description: 'Fast-boiling 1.7L electric kettle with temperature control, keep-warm function, and 360° swivel base. BPA-free inner lid.',
+    price: 49.99,
+    originalPrice: 69.99,
+    images: [getImg('Electric Kettle')],
+    category: getCatId('home-kitchen'),
+    brand: 'BrewMaster',
+    rating: 4.6,
+    reviewCount: 3800,
+    stock: 100
+  });
+  products.push({
+    title: 'Countertop Toaster Oven',
+    description: 'Versatile toaster oven with air fry, bake, broil, and toast functions. 21L capacity fits a 12-inch pizza. Non-stick interior for easy cleaning.',
+    price: 89.99,
+    originalPrice: 109.99,
+    images: [getImg('Toaster Oven')],
+    category: getCatId('home-kitchen'),
+    brand: 'ChefChoice',
+    rating: 4.5,
+    reviewCount: 2900,
+    stock: 55
+  });
+
+  // --- NEW: Clothing ---
+  products.push({
+    title: 'Unisex Pullover Hoodie',
+    description: 'Ultra-soft fleece pullover hoodie with kangaroo pocket and adjustable drawstring hood. Available in multiple colors.',
+    price: 45.00,
+    originalPrice: 59.00,
+    images: [getImg('Hoodie')],
+    category: getCatId('clothing'),
+    brand: 'ComfyWear',
+    rating: 4.7,
+    reviewCount: 8900,
+    stock: 250
+  });
+  products.push({
+    title: 'Men\'s Classic Oxford Shirt',
+    description: 'Timeless Oxford-weave button-down shirt in 100% cotton. Slim fit with button-down collar. Great for casual and smart-casual occasions.',
+    price: 39.99,
+    images: [getImg('Oxford Shirt')],
+    category: getCatId('clothing'),
+    brand: 'StyleCraft',
+    rating: 4.5,
+    reviewCount: 4100,
+    stock: 180
+  });
+  products.push({
+    title: 'Polarized Aviator Sunglasses',
+    description: 'Classic aviator sunglasses with polarized UV400 lenses. Lightweight metal frame and scratch-resistant coating. Includes case and cleaning cloth.',
+    price: 29.99,
+    originalPrice: 49.99,
+    images: [getImg('Sunglasses')],
+    category: getCatId('clothing'),
+    brand: 'SunShade',
+    rating: 4.4,
+    reviewCount: 5600,
+    stock: 300
+  });
+
+  // --- NEW: Toys ---
+  products.push({
+    title: '1000-Piece Jigsaw Puzzle',
+    description: 'Premium 1000-piece jigsaw puzzle featuring beautiful landscape artwork. High-quality pieces with precise fit. Great for all ages.',
+    price: 19.99,
+    images: [getImg('Puzzle')],
+    category: getCatId('toys'),
+    brand: 'PuzzleCraft',
+    rating: 4.6,
+    reviewCount: 3200,
+    stock: 150
+  });
+  products.push({
+    title: 'Giant Stuffed Teddy Bear',
+    description: 'Super soft and huggable 24-inch stuffed teddy bear made from premium plush material. Perfect gift for kids and adults alike.',
+    price: 34.99,
+    originalPrice: 44.99,
+    images: [getImg('Stuffed Animal')],
+    category: getCatId('toys'),
+    brand: 'CuddlePals',
+    rating: 4.8,
+    reviewCount: 4500,
+    stock: 120
+  });
+
+  // --- NEW: Sports ---
+  products.push({
+    title: 'Resistance Bands Set (5-Pack)',
+    description: 'Set of 5 resistance bands ranging from light to extra heavy. Perfect for home workouts, physical therapy, and stretching routines.',
+    price: 24.99,
+    originalPrice: 34.99,
+    images: [getImg('Resistance Bands')],
+    category: getCatId('sports'),
+    brand: 'FlexFit',
+    rating: 4.7,
+    reviewCount: 12000,
+    stock: 400
+  });
+  products.push({
+    title: 'Insulated Stainless Steel Water Bottle',
+    description: 'Double-wall vacuum insulated 32oz water bottle. Keeps drinks cold 24 hours and hot 12 hours. Leak-proof lid and BPA-free.',
+    price: 32.99,
+    images: [getImg('Water Bottle')],
+    category: getCatId('sports'),
+    brand: 'HydroFlow',
+    rating: 4.8,
+    reviewCount: 22000,
+    stock: 500
+  });
+  products.push({
+    title: 'Adjustable Bicycle Helmet',
+    description: 'Lightweight CPSC-certified bicycle helmet with adjustable fit dial, 21 ventilation channels, and removable visor. Fits adults and teens.',
+    price: 49.99,
+    originalPrice: 64.99,
+    images: [getImg('Bicycle Helmet')],
+    category: getCatId('sports'),
+    brand: 'SafeRide',
+    rating: 4.6,
+    reviewCount: 3700,
+    stock: 80
   });
 
   return products;
@@ -383,7 +680,7 @@ const generateProducts = (categoryDocs) => {
 const importData = async () => {
   try {
     console.log('Connecting to MongoDB...');
-    await mongoose.connect('mongodb://127.0.0.1:27017/amazon-rebuild');
+    await mongoose.connect(process.env.MONGO_URI);
     
     console.log('Clearing old data...');
     await Category.deleteMany();
