@@ -64,7 +64,7 @@ const generateProducts = (categoryDocs) => {
       '4K Monitor': 'https://images.unsplash.com/photo-1527443154391-507e9dc6c5cc?w=600&h=400&fit=crop',
       'Drone': 'https://images.unsplash.com/photo-1473968512647-3e447244af8f?w=600&h=400&fit=crop',
       'Rich Dad Poor Dad': 'https://www.penguin.co.in/wp-content/uploads/2023/12/9781612681139-1-scaled.jpg',
-      'Harry Potter Book': 'https://images.unsplash.com/photo-1606787366850-de6330128bfc?w=600&h=400&fit=crop',
+      'Harry Potter Book': 'https://images.unsplash.com/photo-1663953322505-1238f663ede1?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
       'The Alchemist': 'https://images.unsplash.com/photo-1512820790803-83ca734da794?w=600&h=400&fit=crop',
       'Stand Mixer': 'https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=600&h=400&fit=crop',
       'Electric Kettle': 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=600&h=400&fit=crop',
@@ -256,6 +256,28 @@ const generateProducts = (categoryDocs) => {
     rating: 4.6,
     reviewCount: 62000,
     stock: 110
+  });
+  products.push({
+    title: 'Rich Dad Poor Dad',
+    description: 'What the Rich Teach Their Kids About Money That the Poor and Middle Class Do Not!',
+    price: 19.95,
+    images: [getImg('Rich Dad Poor Dad')],
+    category: getCatId('books'),
+    brand: 'Plata Publishing',
+    rating: 4.7,
+    reviewCount: 52000,
+    stock: 150
+  });
+  products.push({
+    title: 'Harry Potter and the Sorcerer\'s Stone',
+    description: 'The first novel in the Harry Potter series and J.K. Rowling\'s debut novel.',
+    price: 24.99,
+    images: [getImg('Harry Potter Book')],
+    category: getCatId('books'),
+    brand: 'Scholastic',
+    rating: 4.9,
+    reviewCount: 98000,
+    stock: 300
   });
 
   // Home & Kitchen (5 products)
@@ -581,7 +603,7 @@ const generateProducts = (categoryDocs) => {
     description: 'Ultra-soft fleece pullover hoodie with kangaroo pocket and adjustable drawstring hood. Available in multiple colors.',
     price: 45.00,
     originalPrice: 59.00,
-    images: [getImg('Hoodie')],
+    images: ['https://warriorworld.in/cdn/shop/files/N-2247-navy-blue.jpg?v=1764574254&width=1600'],
     category: getCatId('clothing'),
     brand: 'ComfyWear',
     rating: 4.7,
@@ -666,7 +688,7 @@ const generateProducts = (categoryDocs) => {
     description: 'Lightweight CPSC-certified bicycle helmet with adjustable fit dial, 21 ventilation channels, and removable visor. Fits adults and teens.',
     price: 49.99,
     originalPrice: 64.99,
-    images: [getImg('Bicycle Helmet')],
+    images: ['https://m.media-amazon.com/images/I/61rMHmSsDDL._AC_UF894,1000_QL80_.jpg'],
     category: getCatId('sports'),
     brand: 'SafeRide',
     rating: 4.6,
