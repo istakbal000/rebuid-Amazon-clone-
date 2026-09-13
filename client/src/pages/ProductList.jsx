@@ -285,7 +285,7 @@ const ProductList = () => {
                 <span className="animate-pulse">Searching...</span>
               ) : (
                 <>
-                  <span className="font-bold">{total.toLocaleString()}</span>
+                  <span className="font-bold">{(total || 0).toLocaleString()}</span>
                   {' '}result{total !== 1 ? 's' : ''}
                   {query && <> for <em className="font-semibold not-italic">"{query}"</em></>}
                   {categorySlug && <> in <strong className="capitalize">{categorySlug.replace('-', ' & ')}</strong></>}
@@ -340,7 +340,7 @@ const ProductList = () => {
               <p className="text-lg font-medium text-red-600 mb-2">Something went wrong</p>
               <p className="text-sm text-gray-500">{error}</p>
             </div>
-          ) : products.length === 0 ? (
+          ) : (!products || products.length === 0) ? (
             <div className="bg-white p-10 text-center rounded-sm border border-gray-300">
               <p className="text-5xl mb-4">🔍</p>
               <h2 className="text-xl font-bold mb-2 text-gray-800">No results found</h2>
