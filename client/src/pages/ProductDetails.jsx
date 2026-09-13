@@ -5,6 +5,7 @@ import { ShoppingCart, Zap, Star, ChevronRight } from 'lucide-react';
 import Rating from '../components/product/Rating';
 import CartContext from '../context/CartContext';
 import { ProductGridSkeleton } from '../components/product/ProductSkeleton';
+import PriceHistory from '../components/product/PriceHistory';
 
 const ProductDetails = () => {
   const { id } = useParams();
@@ -53,6 +54,15 @@ const ProductDetails = () => {
   const discount = product?.originalPrice
     ? Math.round((1 - product.price / product.originalPrice) * 100)
     : 0;
+
+  let dealBadge = null;
+  if (discount >= 10) {
+    dealBadge = <span className="text-xs text-green-800 font-bold bg-green-200 px-2 py-1 rounded ml-2">🟢 Good Deal</span>;
+  } else if (discount > 0) {
+    dealBadge = <span className="text-xs text-yellow-800 font-bold bg-yellow-200 px-2 py-1 rounded ml-2">🟡 Average Price</span>;
+  } else if (product?.originalPrice && product.price > product.originalPrice) {
+    dealBadge = <span className="text-xs text-red-800 font-bold bg-red-200 px-2 py-1 rounded ml-2">🔴 Relatively Expensive</span>;
+  }
 
   if (loading) {
     return (
@@ -167,8 +177,11 @@ const ProductDetails = () => {
                     Was: <span className="line-through">${product.originalPrice.toFixed(2)}</span>
                   </span>
                 )}
+                {dealBadge}
               </div>
               <p className="text-xs text-gray-500 mt-1">All prices include applicable tax</p>
+              
+              <PriceHistory history={product.priceHistory} />
             </div>
 
             {/* Description */}

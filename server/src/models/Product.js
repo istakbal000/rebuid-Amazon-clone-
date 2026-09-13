@@ -11,6 +11,10 @@ const productSchema = new mongoose.Schema({
   rating: { type: Number, default: 0 },
   reviewCount: { type: Number, default: 0 },
   stock: { type: Number, required: true, default: 0 },
+  priceHistory: [{
+    price: { type: Number, required: true },
+    date: { type: Date, required: true, default: Date.now }
+  }],
   specifications: [{ 
     name: { type: String },
     value: { type: String }

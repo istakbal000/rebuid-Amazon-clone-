@@ -15,6 +15,7 @@ import categoryRoutes from './routes/categories.routes.js';
 import cartRoutes from './routes/cart.routes.js';
 import addressRoutes from './routes/addresses.routes.js';
 import orderRoutes from './routes/orders.routes.js';
+import aiRoutes from './routes/ai.routes.js';
 
 const app = express();
 
@@ -32,6 +33,7 @@ app.use('/api/categories', categoryRoutes);
 app.use('/api/cart', cartRoutes);
 app.use('/api/addresses', addressRoutes);
 app.use('/api/orders', orderRoutes);
+app.use('/api/ai', aiRoutes);
 
 app.get('/', (req, res) => {
   res.send('ShopNest API is running...');

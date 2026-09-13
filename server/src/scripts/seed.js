@@ -696,7 +696,17 @@ const generateProducts = (categoryDocs) => {
     stock: 80
   });
 
-  return products;
+  return products.map(p => {
+    if (p.originalPrice) {
+      const now = new Date();
+      p.priceHistory = [
+        { price: p.originalPrice, date: new Date(now.getFullYear(), now.getMonth() - 3, now.getDate()) },
+        { price: p.originalPrice - ((p.originalPrice - p.price) * 0.4), date: new Date(now.getFullYear(), now.getMonth() - 1, now.getDate()) },
+        { price: p.price, date: new Date(now.getFullYear(), now.getMonth(), now.getDate() - 5) }
+      ];
+    }
+    return p;
+  });
 };
 
 const importData = async () => {

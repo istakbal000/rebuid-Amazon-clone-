@@ -11,6 +11,9 @@ import Cart from './pages/Cart';
 import Checkout from './pages/Checkout';
 import Orders from './pages/Orders';
 import OrderDetail from './pages/OrderDetail';
+import Compare from './pages/Compare';
+import CompareTray from './components/product/CompareTray';
+import AiAssistant from './components/AiAssistant';
 
 function App() {
   return (
@@ -26,6 +29,7 @@ function App() {
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
             <Route path="/cart" element={<Cart />} />
+            <Route path="/compare" element={<Compare />} />
             <Route path="/checkout" element={
               <ProtectedRoute><Checkout /></ProtectedRoute>
             } />
@@ -37,6 +41,8 @@ function App() {
             } />
           </Routes>
         </main>
+        <CompareTray />
+        <AiAssistant />
         <Footer />
       </div>
     </Router>
