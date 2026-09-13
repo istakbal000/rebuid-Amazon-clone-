@@ -44,7 +44,7 @@ Return only JSON without any markdown formatting.`;
         { role: 'system', content: systemPrompt },
         { role: 'user', content: `Product Catalog:\n${catalog}\n\nUser query: ${query}` }
       ],
-      model: 'llama3-8b-8192',
+      model: 'openai/gpt-oss-20b',
       temperature: 0.1,
       response_format: { type: 'json_object' }
     });
