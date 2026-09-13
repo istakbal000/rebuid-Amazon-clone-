@@ -36,9 +36,9 @@ const Header = () => {
         </div>
 
         {/* Search Bar */}
-        <form onSubmit={handleSearch} className="hidden sm:flex flex-1 mx-4 max-w-4xl h-10 rounded-md overflow-hidden bg-white">
-          <select className="bg-gray-100 text-gray-700 text-sm px-2 border-r border-gray-300 focus:outline-none hidden lg:block">
-            <option>All</option>
+        <form onSubmit={handleSearch} className="hidden sm:flex flex-1 mx-4 max-w-4xl h-10 rounded-md overflow-hidden bg-white focus-within:ring-2 focus-within:ring-amazon-orange">
+          <select className="bg-gray-100 hover:bg-gray-200 text-gray-700 text-sm px-2 border-r border-gray-300 focus:outline-none hidden lg:block cursor-pointer">
+            <option>All Departments</option>
             <option>Electronics</option>
             <option>Books</option>
           </select>
@@ -49,7 +49,7 @@ const Header = () => {
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
           />
-          <button type="submit" className="bg-amazon-orange hover:bg-yellow-500 px-4 flex items-center justify-center transition-colors">
+          <button type="submit" className="bg-amazon-orange hover:bg-[#f3a847]/90 px-4 flex items-center justify-center transition-colors">
             <Search className="h-5 w-5 text-gray-900" />
           </button>
         </form>

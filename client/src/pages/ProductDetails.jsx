@@ -167,10 +167,10 @@ const ProductDetails = () => {
                 {discount > 0 && (
                   <span className="bg-red-600 text-white text-xs font-bold px-2 py-0.5 rounded">-{discount}%</span>
                 )}
-                <span className="text-3xl font-medium">
-                  <span className="text-base align-top">$</span>
-                  {Math.floor(product.price)}
-                  <span className="text-base align-top">{(product.price % 1).toFixed(2).substring(1)}</span>
+                <span className="text-3xl font-medium flex items-start">
+                  <span className="text-base mt-1">$</span>
+                  <span>{Math.floor(product.price)}</span>
+                  <span className="text-base mt-1">{(product.price % 1).toFixed(2).substring(1)}</span>
                 </span>
                 {product.originalPrice && (
                   <span className="text-sm text-gray-500">
@@ -212,11 +212,18 @@ const ProductDetails = () => {
           <div className="w-full lg:w-64 flex-shrink-0">
             <div className="border border-gray-300 rounded-lg p-4 sticky top-4">
               {/* Price in buybox */}
-              <div className="text-2xl font-bold mb-1">${product.price.toFixed(2)}</div>
+              <div className="flex items-start mb-1 text-gray-900">
+                <span className="text-sm font-semibold mt-1">$</span>
+                <span className="text-3xl font-medium">{Math.floor(product.price)}</span>
+                <span className="text-sm font-semibold mt-1">{(product.price % 1).toFixed(2).substring(1)}</span>
+              </div>
 
               <div className="text-sm mb-3 space-y-1">
                 <p className="text-blue-600 hover:underline cursor-pointer">FREE Returns</p>
-                <p>FREE delivery <span className="font-bold">Tomorrow</span></p>
+                <div className="flex items-center text-xs text-gray-800 mb-1">
+                  <span className="text-blue-500 font-bold italic text-sm mr-1">prime</span>
+                  <span>FREE delivery <span className="font-bold">Tomorrow</span></span>
+                </div>
                 <p className="text-xs text-gray-500">Order within <span className="text-green-600 font-bold">5 hrs 23 mins</span></p>
               </div>
 
@@ -250,14 +257,14 @@ const ProductDetails = () => {
                   <div className="flex flex-col gap-2 mb-4">
                     <button
                       onClick={handleAddToCart}
-                      className="w-full bg-amber-400 hover:bg-amber-500 py-2.5 rounded-full shadow-sm text-sm font-medium flex items-center justify-center gap-2 transition-colors"
+                      className="w-full bg-amazon-yellow hover:bg-amazon-yellow-hover py-2.5 rounded-full shadow-sm text-sm font-medium flex items-center justify-center gap-2 transition-colors border border-transparent hover:border-yellow-500"
                     >
                       <ShoppingCart className="h-4 w-4" />
                       Add to Cart
                     </button>
                     <button
                       onClick={handleBuyNow}
-                      className="w-full bg-orange-500 hover:bg-orange-600 text-white py-2.5 rounded-full shadow-sm text-sm font-medium flex items-center justify-center gap-2 transition-colors"
+                      className="w-full bg-[#ffa41c] hover:bg-[#fa8900] text-gray-900 py-2.5 rounded-full shadow-sm text-sm font-medium flex items-center justify-center gap-2 transition-colors border border-transparent hover:border-orange-500"
                     >
                       <Zap className="h-4 w-4" />
                       Buy Now

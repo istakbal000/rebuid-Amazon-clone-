@@ -3,10 +3,12 @@ import { Link } from 'react-router-dom';
 import Rating from './Rating';
 import { CompareContext } from '../../context/CompareContext';
 import { ToastContext } from '../../context/ToastContext';
+import CartContext from '../../context/CartContext';
 
 const ProductCard = ({ product }) => {
   const { compareItems, addToCompare, removeFromCompare } = useContext(CompareContext);
   const { toast } = useContext(ToastContext);
+  const { addToCart } = useContext(CartContext);
   
   const isCompared = compareItems.some(item => item._id === product._id);
   
@@ -54,19 +56,32 @@ const ProductCard = ({ product }) => {
           <Rating value={product.rating} text={product.reviewCount} />
         </div>
         
-        <div className="mt-auto">
-          <div className="flex items-baseline mb-1 flex-wrap">
-            <span className="text-xs absolute top-0 left-0 bg-red-600 text-white px-2 py-1 rounded-br-md z-10 font-bold">
-              {discountPercent > 0 ? `${discountPercent}% off` : ''}
-            </span>
-            <span className="text-xl font-bold">${Math.floor(product.price)}</span>
-            <span className="text-sm font-bold align-top">{(product.price % 1).toFixed(2).substring(1)}</span>
+        <div className="mt-auto pt-2">
+          <div className="flex items-start mb-1 flex-wrap">
+            <span className="text-sm font-semibold align-top mt-1">$</span>
+            <span className="text-3xl font-medium">{Math.floor(product.price)}</span>
+            <span className="text-sm font-semibold align-top mt-1">{(product.price % 1).toFixed(2).substring(1)}</span>
             {product.originalPrice && (
-              <span className="text-xs text-gray-500 line-through ml-2">List: ${product.originalPrice.toFixed(2)}</span>
+              <span className="text-sm text-gray-500 line-through ml-2 mt-2">${product.originalPrice.toFixed(2)}</span>
             )}
             {dealBadge}
           </div>
-          <p className="text-xs text-gray-500 mb-2">Delivery <span className="font-bold">Tomorrow</span></p>
+          
+          <div className="flex items-center text-xs text-gray-500 mb-2">
+            <span className="text-blue-500 font-bold italic text-sm mr-1">prime</span>
+            <span>FREE Delivery <span className="font-bold text-black">Tomorrow</span></span>
+          </div>
+          
+          <button 
+            onClick={(e) => {
+              e.preventDefault();
+              addToCart(product._id, 1);
+              toast.success('Added to Cart');
+            }}
+            className="w-full bg-amazon-yellow hover:bg-amazon-yellow-hover text-sm font-medium py-1.5 px-3 rounded-full shadow-sm border border-transparent hover:border-yellow-500 transition-colors z-20 relative"
+          >
+            Add to cart
+          </button>
         </div>
       </Link>
     </div>

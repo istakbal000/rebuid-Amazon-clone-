@@ -3,8 +3,12 @@
 @theme {
   --color-amazon-dark: #131921;
   --color-amazon-light: #232f3e;
-  --color-amazon-orange: #f90;
-  --color-amazon-yellow: #febd69;
+  --color-amazon-orange: #f3a847;
+  --color-amazon-yellow: #ffd814;
+  --color-amazon-yellow-hover: #f7ca00;
+  --color-amazon-bg: #eaeded;
+  --color-amazon-link: #007185;
+  --color-amazon-link-hover: #c40000;
 }
 
 body {
