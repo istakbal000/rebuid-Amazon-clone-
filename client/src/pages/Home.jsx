@@ -18,7 +18,7 @@ const AMAZON_CATEGORIES = [
     items: [
       { name: "Headsets", img: "https://images.unsplash.com/photo-1618366712010-f4ae9c647dcb?w=150&h=150&fit=crop" },
       { name: "Keyboards", img: "https://images.unsplash.com/photo-1595225476474-87563907a212?w=150&h=150&fit=crop" },
-      { name: "Mice", img: "https://images.unsplash.com/photo-1527814050087-179f376dd0e7?w=150&h=150&fit=crop" },
+      { name: "Mice", img: "https://images.unsplash.com/photo-1660631228116-b3643559f611?q=80&w=687&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" },
       { name: "Chairs", img: "https://images.unsplash.com/photo-1598300042247-d088f8ab3a91?w=150&h=150&fit=crop" },
     ],
     linkText: "See more"
@@ -27,7 +27,7 @@ const AMAZON_CATEGORIES = [
     title: "Refresh your space",
     slug: "home-kitchen",
     items: [
-      { name: "Dining", img: "https://images.unsplash.com/photo-1617806118233-18e1c094f15d?w=150&h=150&fit=crop" },
+      { name: "Dining", img: "https://plus.unsplash.com/premium_photo-1675744019321-f90d6d719da7?q=80&w=687&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" },
       { name: "Home", img: "https://images.unsplash.com/photo-1513694203232-719a280e022f?w=150&h=150&fit=crop" },
       { name: "Kitchen", img: "https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=150&h=150&fit=crop" },
       { name: "Health", img: "https://images.unsplash.com/photo-1505576399279-565b52d4ac71?w=150&h=150&fit=crop" },
@@ -51,7 +51,7 @@ const AMAZON_CATEGORIES = [
     items: [
       { name: "Fitness", img: "https://images.unsplash.com/photo-1583454110551-21f2fa2afe61?w=150&h=150&fit=crop" },
       { name: "Outdoors", img: "https://images.unsplash.com/photo-1601925260368-ae2f83cf8b7f?w=150&h=150&fit=crop" },
-      { name: "Team Sports", img: "https://images.unsplash.com/photo-1518605368461-1e1e38dd1a31?w=150&h=150&fit=crop" },
+      { name: "Team Sports", img: "https://images.unsplash.com/photo-1628779238951-be2c9f2a59f4?q=80&w=687&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" },
       { name: "Running", img: "https://images.unsplash.com/photo-1530143311094-34d807799e8f?w=150&h=150&fit=crop" },
     ],
     linkText: "Shop now"
